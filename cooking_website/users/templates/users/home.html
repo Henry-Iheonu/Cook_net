@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% extends 'users/base.html' %}
+    {% block title %}Home - Cooking Website{% endblock %}
+</head>
+<body>
+    {% block content %}
+    <div class="container py-5">
+        <!-- Header Section -->
+        <div class="text-center mb-5">
+            <h1 class="text-gradient fw-bold">Welcome to the Cooking Website</h1>
+            <p class="text-muted">Discover and share amazing recipes!</p>
+            <a href="{% url 'post_food' %}" class="btn btn-outline-success btn-lg px-5 create-recipe-btn">Create New Recipe</a>
+        </div>
+
+        <!-- Food Posts Section -->
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-5">
+            {% for food in food_posts %}
+            <div class="col">
+                <div class="card shadow-lg h-100 position-relative">
+                    <!-- Card Hover Glow Effect -->
+                    <div class="position-absolute top-0 start-0 w-100 h-100 card-glow"></div>
+
+                    <div class="card-header text-center bg-gradient text-white fw-bold py-3 rounded-top">
+                        {{ food.title }}
+                    </div>
+                    <div class="card-body d-flex flex-column justify-content-between position-relative">
+                        <!-- Food Description -->
+                        <p class="food-description mb-4">{{ food.description|truncatewords:20 }}</p>
+
+                        <!-- View Details Button -->
+                        <a href="{% url 'food_detail' food.id %}" class="btn btn-primary w-100 fw-bold rounded-pill">
+                            View Details
+                        </a>
+
+                        <!-- Delete Button -->
+                        {% if food.user == request.user %}
+                        <form action="{% url 'delete_food' food.id %}" method="POST" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger w-100 fw-bold rounded-pill mt-3">Delete Post</button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination Section -->
+        <div class="d-flex justify-content-center mt-5">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    {% if food_posts.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1" aria-label="First">
+                            <span aria-hidden="true">&laquo;&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ food_posts.previous_page_number }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    {% for i in food_posts.paginator.page_range %}
+                        {% if food_posts.number == i %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ i }}<span class="sr-only">(current)</span></span>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if food_posts.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ food_posts.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ food_posts.paginator.num_pages }}" aria-label="Last">
+                            <span aria-hidden="true">&raquo;&raquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    {% block extra_css %}
+    <style>
+        /* General Body and Background */
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .text-gradient {
+            background: linear-gradient(to right, #ff7eb3, #ff758c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .text-muted {
+            color: #6c757d !important;
+        }
+
+        .btn-outline-success {
+            border-width: 2px;
+            color: #ffffff;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-outline-success:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.6);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            border: none;
+            color: #ffffff;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2575fc, #6a11cb);
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.5);
+        }
+
+        .card {
+            background-color: #1e1e2f; /* Default color */
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
+        }
+
+        /* Hover Effect for Card */
+        .card:hover {
+            transform: translateY(-10px); /* Slight upward movement */
+            background: linear-gradient(to top, #ff7eb3 5%, #1e1e2f 95%); /* Subtle pink at the top, blending into normal color */
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #ff7eb3, #ff758c);
+            border: none;
+            font-size: 1.25rem;
+            color: #ffffff;
+        }
+
+        .food-description {
+            color: #ffffff;
+            visibility: visible;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        .card-body {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.25rem;
+        }
+
+        .create-recipe-btn {
+            background-color: transparent;
+            border: 2px solid #28a745; /* Green border */
+            color: #28a745; /* Green text */
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        }
+
+        .create-recipe-btn:hover {
+            background-color: #28a745; /* Green background on hover */
+            color: #ffffff; /* White text on hover */
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.6);
+        }
+
+        /* Pagination Styles */
+        .pagination {
+            justify-content: center;
+            display: flex;
+        }
+
+        .pagination .page-item {
+            margin: 0 3px;
+        }
+
+        .pagination .page-item a, .pagination .page-item span {
+            color: #fff;
+            background-color: #333;
+            border: none;
+        }
+
+        .pagination .page-item.active a {
+            background-color: #28a745;
+            border: none;
+        }
+
+        .pagination .page-item:hover a {
+            background-color: #ff7eb3;
+        }
+    </style>
+    {% endblock %}
+    {% endblock %}
+</body>
+</html>

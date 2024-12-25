@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Food Post - Cooking Website</title>
+    <style>
+        /* General body settings */
+        body {
+            background-color: #111; /* Dark background */
+            color: #fff; /* Light text for contrast */
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            position: relative; /* Make body a reference for absolute positioning */
+        }
+
+        .container {
+            background: #222; /* Slightly lighter background for the container */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 800px;
+            margin-top: 50px;
+            position: relative; /* So that the exit button is positioned relative to it */
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #f5f5f5;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* Exit button style */
+        .exit-btn {
+            background-color: #dc3545; /* Red background for exit */
+            color: white;
+            padding: 8px 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            border: none;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .exit-btn:hover {
+            background-color: #c82333;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: #ddd; /* Lighter text for labels */
+        }
+
+        /* All form controls (inputs, textareas) now have a consistent width and style */
+        .form-control {
+            width: 100%;
+            max-width: 90%; /* Restrict input field width */
+            padding: 12px;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 1px solid #444;
+            background-color: #333;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .form-control:focus {
+            border-color: #5e9ccf;
+            box-shadow: 0 0 5px rgba(94, 156, 207, 0.5);
+        }
+
+        .form-control::placeholder {
+            color: #bbb;
+        }
+
+        .form-group textarea {
+            width: 100%; /* Ensure all textareas are same width */
+            max-width: 90%;
+            resize: vertical;
+        }
+
+        .step {
+            background-color: #333;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px; /* Slight space between steps */
+        }
+
+        .step:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .remove-step {
+            background-color: #ff5e5e;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .remove-step:hover {
+            background-color: #e04f4f;
+        }
+
+        #add-step {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 15px;
+        }
+
+        #add-step:hover {
+            background-color: #5a6268;
+        }
+
+        .submit-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 6px;
+            border: none;
+            width: 100%;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            background-color: #218838;
+        }
+
+        /* Narrowing text areas for steps and reasons */
+        .form-control-step, .form-control-reason {
+            width: 90%; /* Make the width narrower */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Exit Button -->
+        <a href="{% url 'home' %}">
+            <button class="exit-btn">Exit</button>
+        </a>
+
+        <h1>Create a New Food Post</h1>
+        <form method="POST" action="{% url 'post_food' %}">
+            {% csrf_token %}
+
+            <!-- Recipe Title -->
+            <div class="form-group">
+                <label for="title">Recipe Title</label>
+                <input type="text" name="title" id="title" class="form-control" placeholder="Enter the title of your recipe" required>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea name="description" id="description" class="form-control" rows="4" placeholder="Provide a detailed description of your recipe" required></textarea>
+            </div>
+
+            <!-- Steps -->
+            <div class="form-group">
+                <label for="steps-container">Steps</label>
+                <div id="steps-container">
+                    <!-- Initial Step -->
+                    <div class="step">
+                        <label for="instruction-1">Step Instruction</label>
+                        <input type="text" name="instruction[]" class="form-control mb-2 form-control-step" placeholder="Step Instruction" required>
+                        <label for="reason-1">Reason for this Step (Optional)</label>
+                        <textarea name="reason[]" class="form-control form-control-reason" placeholder="Reason for this step"></textarea>
+                        <button type="button" class="remove-step d-none">Remove Step</button>
+                    </div>
+                </div>
+                <button type="button" id="add-step" class="btn">Add Another Step</button>
+            </div>
+
+            <!-- Summary -->
+            <div class="form-group">
+                <label for="summary">Summary (Optional)</label>
+                <textarea name="summary" id="summary" class="form-control" rows="3" placeholder="Provide a short summary of all steps (if desired)"></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const stepsContainer = document.getElementById('steps-container');
+            const addStepButton = document.getElementById('add-step');
+
+            addStepButton.addEventListener('click', function () {
+                const stepCount = stepsContainer.children.length + 1;
+
+                // Create a new step block
+                const stepDiv = document.createElement('div');
+                stepDiv.classList.add('step');
+
+                stepDiv.innerHTML = `
+                    <label for="instruction-${stepCount}">Step Instruction</label>
+                    <input type="text" name="instruction[]" class="form-control mb-2 form-control-step" placeholder="Step Instruction" required>
+                    <label for="reason-${stepCount}">Reason for this Step (Optional)</label>
+                    <textarea name="reason[]" class="form-control form-control-reason" placeholder="Reason for this step"></textarea>
+                    <button type="button" class="remove-step">Remove Step</button>
+                `;
+
+                stepsContainer.appendChild(stepDiv);
+
+                // Add remove functionality to the newly added remove button
+                stepDiv.querySelector('.remove-step').addEventListener('click', function () {
+                    stepDiv.remove();
+                    toggleRemoveButtonVisibility();
+                });
+
+                toggleRemoveButtonVisibility();
+            });
+
+            // Initial remove button setup
+            stepsContainer.querySelectorAll('.remove-step').forEach(function (button) {
+                button.addEventListener('click', function () {
+                    button.closest('.step').remove();
+                    toggleRemoveButtonVisibility();
+                });
+            });
+
+            // Ensure the remove button is hidden when there's only one step
+            function toggleRemoveButtonVisibility() {
+                const removeButtons = stepsContainer.querySelectorAll('.remove-step');
+                if (removeButtons.length === 1) {
+                    removeButtons[0].classList.add('d-none');
+                } else {
+                    removeButtons.forEach(button => button.classList.remove('d-none'));
+                }
+            }
+
+            // Call this function on page load
+            toggleRemoveButtonVisibility();
+        });
+    </script>
+</body>
+</html>

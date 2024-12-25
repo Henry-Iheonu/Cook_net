@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ food.title }} Details - Cooking Website</title>
+    <style>
+        /* General page settings */
+        body {
+            background-color: #111;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            min-height: 100vh; /* Ensures height adjusts for content overflow */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+
+        /* Main content container */
+        .act {
+            text-align: center;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Box container for food details */
+        .box {
+            background: linear-gradient(145deg, #222, #333);
+            border-radius: 18px;
+            padding: 30px;
+            width: 90%; /* Adjusted for smaller screens */
+            max-width: 800px;
+            box-shadow: 0 12px 30px rgba(255, 255, 255, 0.1), 0 16px 40px rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        /* Hover effect for box */
+        .box:hover {
+            transform: scale(1.03);
+            box-shadow: 0 15px 30px rgba(255, 255, 255, 0.2), 0 20px 60px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Title of food post */
+        .cat {
+            font-family: 'Orbitron', sans-serif;
+            color: #ff6f61;
+            font-size: 2.5rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #ff6f61;
+            padding-bottom: 10px;
+        }
+
+        /* Description and summary section */
+        .dog {
+            color: #bbb;
+            font-weight: normal;
+            margin-top: 15px;
+            font-size: 40px;
+            line-height: 1.6;
+        }
+
+        .ear {
+            margin-top: 15px;
+            font-size: 2rem;
+            color: #00bcd4;
+        }
+
+        /* Steps list items */
+        ol {
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .fan {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #333;
+            font-size: 20px;
+            border-radius: 8px;
+            color: #f5f5f5;
+            box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .fan:hover {
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .gap {
+            font-weight: bold;
+            color: #ffb74d;
+        }
+
+        .hat {
+            color: #ccc;
+            font-size: 1rem;
+        }
+
+        /* Summary section */
+        .sum {
+            margin-top: 20px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #ffb74d;
+            text-align: left;
+        }
+
+        /* Link button to go back to home */
+        .ink {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .jar {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 25px;
+            text-decoration: none;
+            border-radius: 8px;
+            display: inline-block;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .jar:hover {
+            background-color: #0056b3;
+            transform: scale(1.1);
+        }
+
+        /* Responsive styles for smaller screens */
+        @media (max-width: 768px) {
+            .cat {
+                font-size: 2rem;
+            }
+
+            .ear {
+                font-size: 1rem;
+            }
+
+            .dog, .hat, .sum {
+                font-size: 0.9rem;
+            }
+
+            .fan {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="act">
+        <div class="box">
+            <div class="cat">
+                <h2>{{ food.title }}</h2>
+            </div>
+            <div class="dog">
+                <p><strong>Description:</strong> {{ food.description }}</p>
+            </div>
+
+            <h3 class="ear">Steps</h3>
+            {% if steps %}
+                <ol>
+                    {% for step in steps %}
+                    <li class="fan">
+                        <p class="gap">Instruction: {{ step.instruction }}</p>
+                        {% if step.reason %}
+                            <p class="hat">Reason: {{ step.reason }}</p>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ol>
+            {% else %}
+                <p class="gap">No steps provided.</p>
+            {% endif %}
+
+            <div class="sum">
+                {% if food.summary %}
+                    <p><strong>Summary:</strong> {{ food.summary }}</p>
+                {% else %}
+                    <p>No summary provided.</p>
+                {% endif %}
+            </div>
+
+            <div class="ink">
+                <a href="{% url 'home' %}" class="jar">Back to Home</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
