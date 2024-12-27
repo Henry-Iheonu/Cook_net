@@ -34,11 +34,15 @@
             background: linear-gradient(145deg, #222, #333);
             border-radius: 18px;
             padding: 30px;
-            width: 90%; /* Adjusted for smaller screens */
+            width: 90%;
             max-width: 800px;
             box-shadow: 0 12px 30px rgba(255, 255, 255, 0.1), 0 16px 40px rgba(255, 255, 255, 0.1);
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            word-wrap: break-word; /* Ensures long words wrap inside the container */
+            word-break: break-word; /* Breaks long words that do not fit */
+            overflow-wrap: break-word; /* Prevents overflow for long unbreakable words */
         }
+        
 
         /* Hover effect for box */
         .box:hover {
@@ -57,14 +61,25 @@
             margin-bottom: 10px;
             border-bottom: 2px solid #ff6f61;
             padding-bottom: 10px;
+            word-wrap: break-word; /* Ensure long words break and wrap inside the container */
+            word-break: break-word; /* Breaks long words that do not fit */
         }
+        
+        
+        /* Make the title text responsive on smaller screens */
+        @media (max-width: 768px) {
+            .cat {
+                font-size: 2rem; /* Adjust the font size for smaller screens */
+            }
+        }
+        
 
         /* Description and summary section */
         .dog {
             color: #bbb;
             font-weight: normal;
             margin-top: 15px;
-            font-size: 40px;
+            font-size: 20px;
             line-height: 1.6;
         }
 

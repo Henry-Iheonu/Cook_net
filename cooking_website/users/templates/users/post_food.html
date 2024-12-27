@@ -178,14 +178,18 @@
             <!-- Recipe Title -->
             <div class="form-group">
                 <label for="title">Recipe Title</label>
-                <input type="text" name="title" id="title" class="form-control" placeholder="Enter the title of your recipe" required>
+                <input type="text" name="title" id="title" class="form-control" placeholder="Enter the title of your recipe" required
+                    maxlength="50" minlength="5">
+                <small id="title-error" class="form-text text-danger" style="display:none;">Title must be between 5 and 50 characters.</small>
             </div>
-
             <!-- Description -->
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea name="description" id="description" class="form-control" rows="4" placeholder="Provide a detailed description of your recipe" required></textarea>
+                <textarea name="description" id="description" class="form-control" rows="4" placeholder="Provide a detailed description of your recipe" required
+                    maxlength="150" minlength="20"></textarea>
+                <small id="description-error" class="form-text text-danger" style="display:none;">Description must be between 20 and 150 characters.</small>
             </div>
+            
 
             <!-- Steps -->
             <div class="form-group">
@@ -216,16 +220,43 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Title Validation
+            const titleField = document.getElementById('title');
+            const titleError = document.getElementById('title-error');
+            
+            titleField.addEventListener('input', function () {
+                const titleLength = titleField.value.length;
+                if (titleLength < 5 || titleLength > 50) {
+                    titleError.style.display = 'block'; // Show error if out of range
+                } else {
+                    titleError.style.display = 'none'; // Hide error if within range
+                }
+            });
+    
+            // Description Validation
+            const descriptionField = document.getElementById('description');
+            const descriptionError = document.getElementById('description-error');
+            
+            descriptionField.addEventListener('input', function () {
+                const descriptionLength = descriptionField.value.length;
+                if (descriptionLength < 20 || descriptionLength > 150) {
+                    descriptionError.style.display = 'block'; // Show error if out of range
+                } else {
+                    descriptionError.style.display = 'none'; // Hide error if within range
+                }
+            });
+    
+            // Handling Dynamic Steps Addition and Removal
             const stepsContainer = document.getElementById('steps-container');
             const addStepButton = document.getElementById('add-step');
-
+    
             addStepButton.addEventListener('click', function () {
                 const stepCount = stepsContainer.children.length + 1;
-
+    
                 // Create a new step block
                 const stepDiv = document.createElement('div');
                 stepDiv.classList.add('step');
-
+    
                 stepDiv.innerHTML = `
                     <label for="instruction-${stepCount}">Step Instruction</label>
                     <input type="text" name="instruction[]" class="form-control mb-2 form-control-step" placeholder="Step Instruction" required>
@@ -233,18 +264,18 @@
                     <textarea name="reason[]" class="form-control form-control-reason" placeholder="Reason for this step"></textarea>
                     <button type="button" class="remove-step">Remove Step</button>
                 `;
-
+    
                 stepsContainer.appendChild(stepDiv);
-
+    
                 // Add remove functionality to the newly added remove button
                 stepDiv.querySelector('.remove-step').addEventListener('click', function () {
                     stepDiv.remove();
                     toggleRemoveButtonVisibility();
                 });
-
+    
                 toggleRemoveButtonVisibility();
             });
-
+    
             // Initial remove button setup
             stepsContainer.querySelectorAll('.remove-step').forEach(function (button) {
                 button.addEventListener('click', function () {
@@ -252,7 +283,7 @@
                     toggleRemoveButtonVisibility();
                 });
             });
-
+    
             // Ensure the remove button is hidden when there's only one step
             function toggleRemoveButtonVisibility() {
                 const removeButtons = stepsContainer.querySelectorAll('.remove-step');
@@ -262,10 +293,12 @@
                     removeButtons.forEach(button => button.classList.remove('d-none'));
                 }
             }
-
+    
             // Call this function on page load
             toggleRemoveButtonVisibility();
         });
     </script>
+    
+    
 </body>
 </html>
