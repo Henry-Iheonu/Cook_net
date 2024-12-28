@@ -34,8 +34,9 @@
 
                         <!-- Posted By and Time -->
                         <p class="text-muted small mb-2" style="color: #f0f0f0 !important;">
-                            Posted by {{ food.user.username }} on {{ food.created_at|date:"F j, Y, g:i a" }}
+                            Posted by {% if food.user == request.user %}you{% else %}{{ food.user.username }}{% endif %} on {{ food.created_at|date:"F j, Y, g:i a" }}
                         </p>
+                        
                         
 
                         <!-- View Details Button -->
