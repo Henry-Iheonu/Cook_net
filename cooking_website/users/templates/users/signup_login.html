@@ -1,19 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up or Login</title>
+
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
+        /* Importing fonts for a futuristic style */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap');
+        
+        /* General body styling */
         body {
             background: radial-gradient(circle, #1d1f27, #11131b);
             color: #ffffff;
-            font-family: 'Orbitron', sans-serif;
+            font-family: 'Montserrat', 'Roboto', sans-serif; /* Using Montserrat for a futuristic style */
             margin: 0;
             overflow-x: hidden;
         }
+        
 
+        /* Container for centering content */
         .container {
             display: flex;
             flex-direction: column;
@@ -24,6 +34,7 @@
             box-sizing: border-box;
         }
 
+        /* Form container styling */
         .form-container {
             max-width: 1100px;
             width: 100%;
@@ -34,6 +45,7 @@
             overflow-y: auto;
         }
 
+        /* Logo styling */
         .logo {
             text-align: center;
             margin-bottom: 40px;
@@ -46,9 +58,16 @@
             animation: pulse 2s infinite;
         }
 
+        /* Pulse animation for the logo */
         @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.2); opacity: 0.8; }
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.8;
+            }
         }
 
         .logo h1 {
@@ -58,13 +77,27 @@
             margin: 0;
         }
 
+        /* Forms section layout */
         .form-sections {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
             gap: 20px;
+            opacity: 0; /* Start transparent */
+            animation: fadeIn 1s ease-in forwards; /* Apply fade-in animation */
         }
 
+        @keyframes fadeIn {
+            0% {
+                opacity: 0; /* Fully transparent */
+            }
+            100% {
+                opacity: 1; /* Fully visible */
+            }
+        }
+
+
+        /* Individual form section styling */
         .form-section {
             flex: 1 1 calc(50% - 10px);
             background: linear-gradient(145deg, #252a34, #181a20);
@@ -74,6 +107,7 @@
             transition: transform 0.3s, box-shadow 0.3s;
         }
 
+        /* Hover effect for form sections */
         .form-section:hover {
             transform: translateY(-10px);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
@@ -85,6 +119,7 @@
             text-align: center;
         }
 
+        /* Form controls styling */
         .form-control {
             background: #11131b;
             color: #ffffff;
@@ -100,6 +135,12 @@
             box-shadow: 0 0 10px #00f2fe;
         }
 
+        .form-control::placeholder {
+            color: #cccccc;
+            opacity: 1;
+        }
+
+        /* Button styling */
         .btn {
             width: 100%;
             padding: 12px;
@@ -119,6 +160,7 @@
             box-shadow: 0 5px 15px rgba(0, 255, 255, 0.5);
         }
 
+        /* Alert animations */
         .alert {
             font-size: 0.9rem;
             margin-bottom: 15px;
@@ -126,10 +168,17 @@
         }
 
         @keyframes fadeIn {
-            0% { opacity: 0; transform: translateY(10px); }
-            100% { opacity: 1; transform: translateY(0); }
+            0% {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
+        /* Responsive design for smaller screens */
         @media (max-width: 768px) {
             .form-sections {
                 flex-direction: column;
@@ -139,42 +188,25 @@
                 flex: 1 1 100%;
             }
         }
-        .form-control {
-            background: #11131b;
-            color: #ffffff;
-            border: 1px solid #4facfe;
-            border-radius: 25px;
-            margin-bottom: 15px;
-            padding: 12px;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-        
-        .form-control:focus {
-            border-color: #00f2fe;
-            box-shadow: 0 0 10px #00f2fe;
-        }
-        
-        .form-control::placeholder {
-            color: #cccccc; /* Light gray for softer contrast */
-            opacity: 1; /* Ensure the color is not dimmed */
-        }
-        
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="form-container">
-            <!-- Logo -->
+
+            <!-- Logo Section -->
             <div class="logo">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-utensils" viewBox="0 0 16 16">
-                    <path d="M4.5 0a.5.5 0 0 1 .5.5v3h1V.5a.5.5 0 0 1 1 0v3h1V.5a.5.5 0 0 1 1 0v3h1V.5a.5.5 0 0 1 1 0v3h1V.5a.5.5 0 0 1 1 0v10h-1V4h-1v9H9V4h-1v9H7V4h-1v9H5V4h-1v9H3V4h-1v10h1V1h.5a.5.5 0 0 1 .5.5z"/>
+                    <path d="M4.5 0a.5.5 0 0 1 .5.5v3h1V.5a.5.5 0 0 1 1 0v3h1V.5a.5.5 0 0 1 1 0v3h1V.5a.5.5 0 0 1 1 0v10h-1V4h-1v9H9V4h-1v9H7V4h-1v9H5V4h-1v9H3V4h-1v10h1V1h.5a.5.5 0 0 1 .5.5z" />
                 </svg>
                 <h1>Cook-net</h1>
             </div>
 
             <!-- Forms Section -->
             <div class="form-sections">
-                <!-- Login Form -->
+
+                <!-- Login Form Section -->
                 <div class="form-section">
                     <h3>Login</h3>
                     {% if login_error %}
@@ -188,7 +220,7 @@
                     </form>
                 </div>
 
-                <!-- Signup Form -->
+                <!-- Signup Form Section -->
                 <div class="form-section">
                     <h3>Sign Up</h3>
                     {% if signup_error %}
@@ -207,9 +239,13 @@
                         <button type="submit" name="signup" class="btn">Sign Up</button>
                     </form>
                 </div>
+
             </div>
         </div>
     </div>
+
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

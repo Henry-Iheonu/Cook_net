@@ -179,15 +179,15 @@
             <div class="form-group">
                 <label for="title">Recipe Title</label>
                 <input type="text" name="title" id="title" class="form-control" placeholder="Enter the title of your recipe" required
-                    maxlength="50" minlength="5">
-                <small id="title-error" class="form-text text-danger" style="display:none;">Title must be between 5 and 50 characters.</small>
+                    maxlength="50" minlength="4">
+                <small id="title-error" class="form-text text-danger" style="display:none;">Title must be between 4 and 50 characters.</small>
             </div>
             <!-- Description -->
             <div class="form-group">
                 <label for="description">Description</label>
                 <textarea name="description" id="description" class="form-control" rows="4" placeholder="Provide a detailed description of your recipe" required
-                    maxlength="150" minlength="20"></textarea>
-                <small id="description-error" class="form-text text-danger" style="display:none;">Description must be between 20 and 150 characters.</small>
+                    maxlength="150" minlength="10"></textarea>
+                <small id="description-error" class="form-text text-danger" style="display:none;">Description must be between 10 and 100 characters.</small>
             </div>
             
 
@@ -226,7 +226,7 @@
             
             titleField.addEventListener('input', function () {
                 const titleLength = titleField.value.length;
-                if (titleLength < 5 || titleLength > 50) {
+                if (titleLength < 4 || titleLength > 50) {
                     titleError.style.display = 'block'; // Show error if out of range
                 } else {
                     titleError.style.display = 'none'; // Hide error if within range
@@ -239,7 +239,7 @@
             
             descriptionField.addEventListener('input', function () {
                 const descriptionLength = descriptionField.value.length;
-                if (descriptionLength < 20 || descriptionLength > 150) {
+                if (descriptionLength < 10 || descriptionLength > 100) {
                     descriptionError.style.display = 'block'; // Show error if out of range
                 } else {
                     descriptionError.style.display = 'none'; // Hide error if within range
